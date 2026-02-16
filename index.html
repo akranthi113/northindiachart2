@@ -1,315 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>North India chart style</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VedicChart Pro | North Indian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #f4b400;
+            --danger: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --border-color: #cbd5e1;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
 
-<style>
-:root {
-    --gold: #f4b400;
-    --red: #d32f2f;
-    --purple: #7b1fa2;
-    --border: #222;
-    --bg: #f4f6fb;
-}
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: linear-gradient(135deg,#eef1f8,#f8fafc);
-    margin:0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-.header {
-    padding:25px 15px 10px;
-    text-align:center;
-}
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.header h1 {
-    margin:0;
-    font-size:clamp(1.5rem,4vw,2rem);
-}
+        .header h1 {
+            font-weight: 800;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            margin: 0;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, var(--primary), #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.header p {
-    color:#666;
-    font-size:0.95rem;
-}
+        /* --- Main Layout --- */
+        .main-content {
+            width: 100%;
+            max-width: 580px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-.main {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:25px;
-    padding:20px;
-    width:100%;
-    max-width:800px;
-}
+        /* --- Chart Card --- */
+        .chart-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
 
-.chart-container {
-    background:white;
-    padding:20px;
-    border-radius:28px;
-    box-shadow:0 25px 60px rgba(0,0,0,0.12);
-    width:100%;
-    display:flex;
-    justify-content:center;
-}
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-svg {
-    width:100%;
-    height:auto;
-    max-width:520px;
-}
+        .house {
+            fill: #ffffff;
+            stroke: var(--border-color);
+            stroke-width: 1.5;
+            transition: fill 0.2s ease, stroke 0.2s ease;
+        }
 
-.house {
-    fill:#fff;
-    stroke:var(--border);
-    stroke-width:1.6;
-}
+        .house:hover {
+            fill: #fafaff;
+            stroke: var(--primary);
+        }
 
-.house:hover {
-    fill:#fffdf3;
-}
+        .zodiac-num {
+            fill: var(--primary);
+            font-size: 16px;
+            font-weight: 800;
+            pointer-events: none;
+        }
 
-.house-num {
-    fill:#aaa;
-    font-size:13px;
-    pointer-events:none;
-}
+        .house-num {
+            fill: var(--text-muted);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
 
-.zodiac-num {
-    fill:#333;
-    font-size:15px;
-    font-weight:600;
-    pointer-events:none;
-}
+        .planet-tag {
+            fill: var(--text-main);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: fill 0.2s;
+        }
 
-.planet-tag {
-    fill:var(--red);
-    font-size:13px;
-    font-weight:700;
-    cursor:pointer;
-}
+        .planet-tag:hover { fill: var(--danger); }
 
-#planet-bank {
-    background:white;
-    padding:18px;
-    border-radius:50px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:12px;
-}
+        /* --- Bottom Panels --- */
+        .panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
 
-.planet-item {
-    padding:10px 20px;
-    background:linear-gradient(135deg,#f4b400,#ffca28);
-    color:white;
-    border-radius:50px;
-    cursor:grab;
-    font-weight:600;
-    min-width:50px;
-    touch-action:none;
-}
+        .panel-title {
+            display: block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
 
-.planet-item.in-use {
-    opacity:0.35;
-    pointer-events:none;
-    background:#bbb;
-}
+        #planet-bank {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
 
-.planet-item.lagna-planet {
-    background:linear-gradient(135deg,#7b1fa2,#ab47bc);
-}
+        .planet-item {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: grab;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
 
-.controls {
-    margin-top:10px;
-}
+        .planet-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.15);
+        }
 
-button {
-    padding:12px 32px;
-    border:none;
-    border-radius:50px;
-    background:#222;
-    color:white;
-    cursor:pointer;
-}
-</style>
+        .planet-item.in-use {
+            opacity: 0.25;
+            filter: grayscale(1);
+            pointer-events: none;
+        }
+
+        .planet-item.lagna-planet {
+            background: #eef2ff;
+            color: var(--primary);
+            border-color: #c7d2fe;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-reset {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 18px;
+            background: var(--text-main);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .btn-reset:active { transform: scale(0.98); }
+        .btn-reset:hover { background: #000; }
+
+        .hint-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+            margin: 0;
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="header">
-<h1>North Indian Styled Chart </h1>
-<p>Drag planets into houses </p>
+    <h1>VedicChart Pro</h1>
 </div>
 
-<div class="main">
+<div class="main-content">
+    <div class="chart-card">
+        <svg id="chart" viewBox="0 0 500 500">
+            <g id="houses-group"></g>
+            <g id="labels-group"></g>
+            <g id="planets-group"></g>
+        </svg>
+    </div>
 
-<div class="chart-container">
-<svg id="chart" viewBox="0 0 500 500">
-<g id="houses-group"></g>
-<g id="labels-group"></g>
-<g id="planets-group"></g>
-</svg>
-</div>
+    <div class="panel">
+        <span class="panel-title">Planet Inventory</span>
+        <div id="planet-bank"></div>
+    </div>
 
-<div id="planet-bank"></div>
-
-<div class="controls">
-<button onclick="resetChart()">Reset Everything</button>
-</div>
-
+    <div class="panel controls">
+        <button class="btn-reset" onclick="resetChart()">Reset Full Chart</button>
+        <p class="hint-text">
+            Drag planets to houses. Click a planet in the chart to remove it.
+        </p>
+    </div>
 </div>
 
 <script>
-/* === YOUR ORIGINAL WORKING LOGIC RESTORED === */
+/** * CORE LOGIC RESTORED 
+ * (Same behavior, cleaner integration)
+ */
 
-const PLANETS=[
-{full:"Sun",short:"Su"},
-{full:"Moon",short:"Mo"},
-{full:"Mars",short:"Ma"},
-{full:"Mercury",short:"Me"},
-{full:"Jupiter",short:"Ju"},
-{full:"Venus",short:"Ve"},
-{full:"Saturn",short:"Sa"},
-{full:"Rahu",short:"Ra"},
-{full:"Ketu",short:"Ke"},
-{full:"Lagna",short:"La"}
+const PLANETS = [
+    {full:"Sun",short:"Su"}, {full:"Moon",short:"Mo"}, {full:"Mars",short:"Ma"},
+    {full:"Mercury",short:"Me"}, {full:"Jupiter",short:"Ju"}, {full:"Venus",short:"Ve"},
+    {full:"Saturn",short:"Sa"}, {full:"Rahu",short:"Ra"}, {full:"Ketu",short:"Ke"},
+    {full:"Lagna",short:"La"}
 ];
 
-const HOUSE_PATHS=[
-{ id:1,p:"250,250 125,125 250,0 375,125",c:[250,110],z:[250,30]},
-{ id:2,p:"125,125 250,0 0,0",c:[130,60],z:[50,20]},
-{ id:3,p:"125,125 0,250 0,0",c:[60,130],z:[20,50]},
-{ id:4,p:"250,250 125,125 0,250 125,375",c:[110,250],z:[30,250]},
-{ id:5,p:"125,375 0,250 0,500",c:[60,370],z:[20,450]},
-{ id:6,p:"125,375 250,500 0,500",c:[130,440],z:[50,480]},
-{ id:7,p:"250,250 125,375 250,500 375,375",c:[250,390],z:[250,470]},
-{ id:8,p:"375,375 250,500 500,500",c:[370,440],z:[450,480]},
-{ id:9,p:"375,375 500,250 500,500",c:[440,370],z:[480,450]},
-{ id:10,p:"250,250 375,125 500,250 375,375",c:[390,250],z:[470,250]},
-{ id:11,p:"375,125 500,0 500,250",c:[440,130],z:[480,50]},
-{ id:12,p:"375,125 250,0 500,0",c:[370,60],z:[450,20]}
+const HOUSE_PATHS = [
+    { id:1, p:"250,250 125,125 250,0 375,125", c:[250,115], z:[250,35]},
+    { id:2, p:"125,125 250,0 0,0", c:[120,65], z:[45,25]},
+    { id:3, p:"125,125 0,250 0,0", c:[65,120], z:[25,45]},
+    { id:4, p:"250,250 125,125 0,250 125,375", c:[115,250], z:[35,250]},
+    { id:5, p:"125,375 0,250 0,500", c:[65,380], z:[25,455]},
+    { id:6, p:"125,375 250,500 0,500", c:[120,435], z:[45,475]},
+    { id:7, p:"250,250 125,375 250,500 375,375", c:[250,385], z:[250,465]},
+    { id:8, p:"375,375 250,500 500,500", c:[380,435], z:[455,475]},
+    { id:9, p:"375,375 500,250 500,500", c:[435,380], z:[475,455]},
+    { id:10, p:"250,250 375,125 500,250 375,375", c:[385,250], z:[465,250]},
+    { id:11, p:"375,125 500,0 500,250", c:[435,120], z:[475,45]},
+    { id:12, p:"375,125 250,0 500,0", c:[380,65], z:[455,25]}
 ];
 
-let state={placements:{"Lagna":1}};
-let draggedPlanet=null;
+let state = { placements: {"Lagna": 1} };
+let draggedPlanet = null;
 
-function init(){
-renderPlanetBank();
-renderHouses();
-renderChart();
+function init() {
+    renderPlanetBank();
+    renderHouses();
+    renderChart();
 }
 
-function renderPlanetBank(){
-const container=document.getElementById('planet-bank');
-container.innerHTML=PLANETS.map(p=>{
-const inUse=state.placements[p.full]!==undefined;
-const isLagna=p.full==="Lagna";
-return `<div class="planet-item ${inUse?'in-use':''} ${isLagna?'lagna-planet':''}"
-draggable="true"
-ondragstart="onDragStart(event,'${p.full}')"
-ontouchstart="onTouchStart(event,'${p.full}')">
-${p.short}</div>`;
-}).join('');
+function renderPlanetBank() {
+    const container = document.getElementById('planet-bank');
+    container.innerHTML = PLANETS.map(p => {
+        const inUse = state.placements[p.full] !== undefined;
+        const isLagna = p.full === "Lagna";
+        return `<div class="planet-item ${inUse?'in-use':''} ${isLagna?'lagna-planet':''}" 
+                draggable="${!inUse}" 
+                ondragstart="onDragStart(event,'${p.full}')"
+                ontouchstart="onTouchStart(event,'${p.full}')">
+                ${p.short}</div>`;
+    }).join('');
 }
 
-function renderHouses(){
-const group=document.getElementById('houses-group');
-group.innerHTML=HOUSE_PATHS.map(h=>`
-<polygon data-house="${h.id}"
-points="${h.p}"
-class="house"
-ondragover="event.preventDefault()"
-ondrop="onDrop(event,${h.id})"></polygon>`).join('');
+function renderHouses() {
+    const group = document.getElementById('houses-group');
+    group.innerHTML = HOUSE_PATHS.map(h => `
+        <polygon data-house="${h.id}" 
+                 points="${h.p}" 
+                 class="house" 
+                 ondragover="event.preventDefault()" 
+                 ondrop="onDrop(event,${h.id})"></polygon>`).join('');
 }
 
-function renderChart(){
-const labelGroup=document.getElementById('labels-group');
-const planetGroup=document.getElementById('planets-group');
-labelGroup.innerHTML='';
-planetGroup.innerHTML='';
+function renderChart() {
+    const labelGroup = document.getElementById('labels-group');
+    const planetGroup = document.getElementById('planets-group');
+    labelGroup.innerHTML = '';
+    planetGroup.innerHTML = '';
 
-const lagnaHouse=state.placements["Lagna"]||1;
+    const lagnaHouse = state.placements["Lagna"] || 1;
 
-HOUSE_PATHS.forEach(h=>{
-let display=((h.id-lagnaHouse+12)%12)+1;
-labelGroup.appendChild(createText(h.z[0],h.z[1],display,'zodiac-num'));
-labelGroup.appendChild(createText(h.c[0],h.c[1]-30,"H"+display,'house-num'));
+    HOUSE_PATHS.forEach(h => {
+        let zodiacDisplay = ((h.id - lagnaHouse + 12) % 12) + 1;
+        
+        labelGroup.appendChild(createText(h.z[0], h.z[1], zodiacDisplay, 'zodiac-num'));
+        labelGroup.appendChild(createText(h.c[0], h.c[1] - 35, 'H' + zodiacDisplay, 'house-num'));
 
-Object.keys(state.placements)
-.filter(p=>state.placements[p]===h.id)
-.forEach((p,i)=>{
-const short=PLANETS.find(x=>x.full===p)?.short||p;
-const node=createText(h.c[0],h.c[1]+(i*18),short,'planet-tag');
-node.onclick=()=>removePlanet(p);
-node.setAttribute('draggable','true');
-node.ondragstart=(e)=>onDragStart(e,p);
-node.ontouchstart=(e)=>onTouchStart(e,p);
-planetGroup.appendChild(node);
-});
-});
+        const placedPlanets = Object.keys(state.placements).filter(p => state.placements[p] === h.id);
+        
+        placedPlanets.forEach((p, i) => {
+            const short = PLANETS.find(x => x.full === p)?.short || p;
+            const node = createText(h.c[0], h.c[1] + (i * 20), short, 'planet-tag');
+            node.onclick = () => removePlanet(p);
+            node.setAttribute('draggable', 'true');
+            node.ondragstart = (e) => onDragStart(e, p);
+            node.ontouchstart = (e) => onTouchStart(e, p);
+            planetGroup.appendChild(node);
+        });
+    });
 }
 
-function onDragStart(e,p){
-draggedPlanet=p;
-e.dataTransfer.setData("text/plain",p);
+function onDragStart(e, p) {
+    draggedPlanet = p;
+    if(e.dataTransfer) e.dataTransfer.setData("text/plain", p);
 }
 
-function onDrop(e,houseId){
-e.preventDefault();
-const p=e.dataTransfer.getData("text/plain")||draggedPlanet;
-if(!p)return;
-state.placements[p]=houseId;
-draggedPlanet=null;
-sync();
+function onDrop(e, houseId) {
+    e.preventDefault();
+    const p = (e.dataTransfer ? e.dataTransfer.getData("text/plain") : null) || draggedPlanet;
+    if (!p) return;
+    state.placements[p] = houseId;
+    draggedPlanet = null;
+    sync();
 }
 
-function onTouchStart(e,p){
-draggedPlanet=p;
-document.addEventListener('touchend',handleTouchEnd,{once:true});
+function onTouchStart(e, p) {
+    draggedPlanet = p;
+    document.addEventListener('touchend', handleTouchEnd, {once: true});
 }
 
-function handleTouchEnd(e){
-if(!draggedPlanet)return;
-const touch=e.changedTouches[0];
-const elem=document.elementFromPoint(touch.clientX,touch.clientY);
-if(elem&&elem.dataset.house){
-state.placements[draggedPlanet]=parseInt(elem.dataset.house);
-}
-draggedPlanet=null;
-sync();
-}
-
-function removePlanet(p){
-if(p==="Lagna"){alert("Lagna cannot be removed.");return;}
-delete state.placements[p];
-sync();
+function handleTouchEnd(e) {
+    if (!draggedPlanet) return;
+    const touch = e.changedTouches[0];
+    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (elem && elem.dataset.house) {
+        state.placements[draggedPlanet] = parseInt(elem.dataset.house);
+    }
+    draggedPlanet = null;
+    sync();
 }
 
-function resetChart(){
-state.placements={"Lagna":1};
-sync();
+function removePlanet(p) {
+    if (p === "Lagna") return; 
+    delete state.placements[p];
+    sync();
 }
 
-function sync(){
-renderPlanetBank();
-renderChart();
+function resetChart() {
+    state.placements = {"Lagna": 1};
+    sync();
 }
 
-function createText(x,y,t,cls){
-const node=document.createElementNS("http://www.w3.org/2000/svg","text");
-node.setAttribute("x",x);
-node.setAttribute("y",y);
-node.setAttribute("class",cls);
-node.setAttribute("text-anchor","middle");
-node.textContent=t;
-return node;
+function sync() {
+    renderPlanetBank();
+    renderChart();
+}
+
+function createText(x, y, t, cls) {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    node.setAttribute("x", x);
+    node.setAttribute("y", y);
+    node.setAttribute("class", cls);
+    node.setAttribute("text-anchor", "middle");
+    node.setAttribute("dominant-baseline", "middle");
+    node.textContent = t;
+    return node;
 }
 
 init();
