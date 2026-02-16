@@ -2,15 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VedicChart Pro | North Indian</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent: #f4b400;
-            --danger: #ef4444;
             --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             --card-bg: #ffffff;
             --border-color: #cbd5e1;
@@ -18,7 +15,10 @@
             --text-muted: #64748b;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -30,58 +30,52 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            /* Prevents bounce/refresh on some mobile browsers while dragging */
+            overscroll-behavior: none; 
         }
 
-        /* --- Header --- */
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
             font-weight: 800;
-            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            font-size: 1.8rem;
             margin: 0;
-            letter-spacing: -0.03em;
             background: linear-gradient(to right, var(--primary), #9333ea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- Main Layout --- */
         .main-content {
             width: 100%;
-            max-width: 580px;
+            max-width: 500px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
-        /* --- Chart Card --- */
         .chart-card {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.8);
+            padding: 15px;
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid white;
         }
 
         svg {
             width: 100%;
             height: auto;
             display: block;
+            /* Crucial: prevents the chart itself from being a scroll-trigger on mobile */
+            touch-action: none; 
         }
 
         .house {
             fill: #ffffff;
             stroke: var(--border-color);
             stroke-width: 1.5;
-            transition: fill 0.2s ease, stroke 0.2s ease;
-        }
-
-        .house:hover {
-            fill: #fafaff;
-            stroke: var(--primary);
         }
 
         .zodiac-num {
@@ -95,8 +89,6 @@
             fill: var(--text-muted);
             font-size: 10px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             pointer-events: none;
         }
 
@@ -105,29 +97,16 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: fill 0.2s;
+            /* Crucial: Prevents scroll interference on chart-to-chart drag */
+            touch-action: none; 
         }
 
-        .planet-tag:hover { fill: var(--danger); }
-
-        /* --- Bottom Panels --- */
         .panel {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            padding: 24px;
+            padding: 20px;
             border-radius: 24px;
             border: 1px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-
-        .panel-title {
-            display: block;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            letter-spacing: 1px;
         }
 
         #planet-bank {
@@ -138,29 +117,23 @@
         }
 
         .planet-item {
-            width: 54px;
-            height: 54px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: white;
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 14px;
             font-weight: 700;
             cursor: grab;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            /* CRITICAL: Stops the page from scrolling when you touch and drag a planet */
+            touch-action: none; 
             user-select: none;
         }
 
-        .planet-item:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.15);
-        }
-
         .planet-item.in-use {
-            opacity: 0.25;
-            filter: grayscale(1);
+            opacity: 0.2;
             pointer-events: none;
         }
 
@@ -170,34 +143,16 @@
             border-color: #c7d2fe;
         }
 
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         .btn-reset {
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 18px;
+            border-radius: 16px;
             background: var(--text-main);
             color: white;
             font-weight: 700;
-            font-size: 1rem;
+            margin-top: 10px;
             cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
-        }
-
-        .btn-reset:active { transform: scale(0.98); }
-        .btn-reset:hover { background: #000; }
-
-        .hint-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-align: center;
-            line-height: 1.5;
-            margin: 0;
         }
     </style>
 </head>
@@ -217,22 +172,13 @@
     </div>
 
     <div class="panel">
-        <span class="panel-title">Planet Inventory</span>
         <div id="planet-bank"></div>
-    </div>
-
-    <div class="panel controls">
-        <button class="btn-reset" onclick="resetChart()">Reset Full Chart</button>
-        <p class="hint-text">
-            Drag planets to houses. Click a planet in the chart to remove it.
-        </p>
+        <button class="btn-reset" onclick="resetChart()">Reset Everything</button>
     </div>
 </div>
 
 <script>
-/** * CORE LOGIC RESTORED 
- * (Same behavior, cleaner integration)
- */
+/** * CORE LOGIC PRESERVED WITH MOBILE SCROLL FIX */
 
 const PLANETS = [
     {full:"Sun",short:"Su"}, {full:"Moon",short:"Mo"}, {full:"Mars",short:"Ma"},
@@ -298,12 +244,10 @@ function renderChart() {
 
     HOUSE_PATHS.forEach(h => {
         let zodiacDisplay = ((h.id - lagnaHouse + 12) % 12) + 1;
-        
         labelGroup.appendChild(createText(h.z[0], h.z[1], zodiacDisplay, 'zodiac-num'));
         labelGroup.appendChild(createText(h.c[0], h.c[1] - 35, 'H' + zodiacDisplay, 'house-num'));
 
         const placedPlanets = Object.keys(state.placements).filter(p => state.placements[p] === h.id);
-        
         placedPlanets.forEach((p, i) => {
             const short = PLANETS.find(x => x.full === p)?.short || p;
             const node = createText(h.c[0], h.c[1] + (i * 20), short, 'planet-tag');
@@ -330,7 +274,10 @@ function onDrop(e, houseId) {
     sync();
 }
 
+/** TOUCH HANDLING WITH SCROLL PREVENT */
 function onTouchStart(e, p) {
+    // This is the fix: Prevents the browser from scrolling while touching a planet
+    if (e.cancelable) e.preventDefault(); 
     draggedPlanet = p;
     document.addEventListener('touchend', handleTouchEnd, {once: true});
 }
