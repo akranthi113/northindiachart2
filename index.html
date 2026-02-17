@@ -62,11 +62,13 @@
         .zodiac-num { fill: #cbd5e1; font-size: 17px; font-weight: 800; pointer-events: none; }
         .sign-label { fill: #94a3b8; font-size: 10px; font-weight: 700; pointer-events: none; opacity: 0.7; }
         
-        /* Premium Planet Styling */
         .planet-tag { 
-            font-size: 15px; font-weight: 800; 
+            font-size: 16px; font-weight: 800; 
             cursor: move; pointer-events: all; user-select: none;
-            paint-order: stroke; stroke: #ffffff; stroke-width: 4px; stroke-linecap: round;
+            paint-order: stroke; 
+            stroke: #ffffff; 
+            stroke-width: 3px; /* Slightly reduced for better mobile clarity */
+            stroke-linecap: round;
         }
 
         .control-panel {
@@ -129,8 +131,11 @@
         <svg id="chart" viewBox="0 0 500 500">
             <defs>
                 <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="1.5" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    <feGaussianBlur stdDeviation="1" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
                 </filter>
             </defs>
             <g id="houses-group"></g>
@@ -159,11 +164,11 @@
 <script>
 const SIGN_NAMES = ["Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi"];
 const PLANETS = [
-    {full:"Sun", short:"Su", color:"var(--clr-sun)"}, {full:"Moon", short:"Mo", color:"var(--clr-moo)"}, 
-    {full:"Mars", short:"Ma", color:"var(--clr-mar)"}, {full:"Mercury", short:"Me", color:"var(--clr-mer)"}, 
-    {full:"Jupiter", short:"Ju", color:"var(--clr-jup)"}, {full:"Venus", short:"Ve", color:"var(--clr-ven)"},
-    {full:"Saturn", short:"Sa", color:"var(--clr-sat)"}, {full:"Rahu", short:"Ra", color:"var(--clr-nod)"}, 
-    {full:"Ketu", short:"Ke", color:"var(--clr-nod)"}, {full:"Lagna", short:"La", color:"var(--clr-lag)"}
+    {full:"Sun", short:"Su", color:"#f59e0b"}, {full:"Moon", short:"Mo", color:"#475569"}, 
+    {full:"Mars", short:"Ma", color:"#ef4444"}, {full:"Mercury", short:"Me", color:"#10b981"}, 
+    {full:"Jupiter", short:"Ju", color:"#d97706"}, {full:"Venus", short:"Ve", color:"#db2777"},
+    {full:"Saturn", short:"Sa", color:"#1e293b"}, {full:"Rahu", short:"Ra", color:"#64748b"}, 
+    {full:"Ketu", short:"Ke", color:"#64748b"}, {full:"Lagna", short:"La", color:"#6366f1"}
 ];
 
 const HOUSE_PATHS = [
@@ -242,15 +247,21 @@ function renderChart() {
         labelGroup.appendChild(createText(h.c[0], h.c[1] - 45, signName, 'sign-label'));
 
         const placedNames = Object.keys(state.placements).filter(p => state.placements[p] === h.id);
-        const spacing = 19;
+        const spacing = 20;
         const totalHeight = (placedNames.length - 1) * spacing;
         const startY = h.c[1] - (totalHeight / 2) + 5;
 
         placedNames.forEach((name, i) => {
             const pData = PLANETS.find(x => x.full === name);
             const node = createText(h.c[0], startY + (i * spacing), pData.short, 'planet-tag');
+            
+            // Fix: Hard-assigning color and using style for mobile compatibility
             node.setAttribute('fill', pData.color);
-            node.setAttribute('filter', 'url(#glow)'); // Apply glow filter
+            node.style.fill = pData.color;
+            
+            // Fix: Conditional filter application (optional: remove if mobile still struggles)
+            node.setAttribute('filter', 'url(#glow)'); 
+            
             node.onmousedown = (e) => startDrag(e, name, pData.short, pData.color);
             node.ontouchstart = (e) => startDrag(e, name, pData.short, pData.color);
             node.onclick = (e) => { e.stopPropagation(); removePlanet(name); };
