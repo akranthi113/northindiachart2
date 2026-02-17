@@ -12,12 +12,17 @@
             --bg-body: #f1f5f9;
             --card-bg: #ffffff;
             --text-main: #0f172a;
-            --text-muted: #64748b;
+            --text-muted: #94a3b8;
             --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.1);
+            
+            /* High-Vibrancy Planet Colors */
+            --clr-sun: #f59e0b; --clr-moo: #475569; --clr-mar: #ef4444;
+            --clr-mer: #10b981; --clr-jup: #d97706; --clr-ven: #db2777;
+            --clr-sat: #1e293b; --clr-nod: #64748b; --clr-lag: #6366f1;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: none; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -43,75 +48,74 @@
 
         .chart-wrapper {
             background: var(--card-bg);
-            border-radius: 24px; padding: 8px;
+            border-radius: 28px; padding: 10px;
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(255,255,255,0.8);
             flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
         }
 
-        svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.02)); }
+        svg { width: 100%; height: auto; display: block; }
 
-        .house { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; pointer-events: all; transition: all 0.2s; }
-        .house.drag-over { fill: #f5f3ff; stroke: var(--primary); stroke-width: 2; }
+        .house { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; pointer-events: all; transition: all 0.25s ease; }
+        .house.drag-over { fill: #f5f3ff; stroke: var(--primary); stroke-width: 2.5; filter: contrast(1.1); }
 
-        .zodiac-num { fill: var(--primary); font-size: 18px; font-weight: 800; pointer-events: none; }
-        .sign-label { fill: var(--text-muted); font-size: 10px; font-weight: 700; pointer-events: none; }
+        .zodiac-num { fill: #cbd5e1; font-size: 17px; font-weight: 800; pointer-events: none; }
+        .sign-label { fill: #94a3b8; font-size: 10px; font-weight: 700; pointer-events: none; opacity: 0.7; }
+        
+        /* Premium Planet Styling */
         .planet-tag { 
-            fill: var(--text-main); font-size: 15px; font-weight: 800; 
+            font-size: 15px; font-weight: 800; 
             cursor: move; pointer-events: all; user-select: none;
+            paint-order: stroke; stroke: #ffffff; stroke-width: 4px; stroke-linecap: round;
         }
 
         .control-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            border-radius: 24px; padding: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 24px; padding: 18px;
             border: 1px solid white;
             flex-grow: 1; overflow-y: auto;
             box-shadow: var(--shadow-sm);
-            display: flex; flex-direction: column; gap: 16px;
-            touch-action: pan-y;
+            display: flex; flex-direction: column; gap: 18px;
         }
 
-        .bank-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .bank-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
-        #planet-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        #planet-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 
         .planet-item {
-            width: 44px; height: 44px; 
+            width: 42px; height: 42px; 
             display: flex; align-items: center; justify-content: center;
             background: white; border: 1px solid #e2e8f0;
-            border-radius: 12px; font-weight: 700; font-size: 0.9rem;
-            box-shadow: var(--shadow-sm); cursor: move;
+            border-radius: 14px; font-weight: 800; font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: move;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-        .planet-item.in-use { opacity: 0.25; filter: grayscale(1); pointer-events: none; border-style: dashed; }
-        .planet-item.lagna-planet { background: #eef2ff; color: var(--primary); border: 1px solid #c7d2fe; }
+        .planet-item:active { transform: scale(0.95); }
+        .planet-item.in-use { opacity: 0.15; filter: grayscale(1); pointer-events: none; border-style: dashed; }
 
         .form-row { display: flex; flex-direction: column; gap: 6px; }
         
         select {
-            width: 100%; padding: 12px 16px; border-radius: 14px;
-            border: 1.5px solid #e2e8f0; background: white;
-            font-family: inherit; font-weight: 600; font-size: 0.95rem;
+            width: 100%; padding: 14px; border-radius: 16px;
+            border: 1.5px solid #e2e8f0; background: #f8fafc;
+            font-family: inherit; font-weight: 700; font-size: 0.95rem;
             color: var(--text-main); appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 12px center; background-size: 16px;
         }
 
         .btn-reset {
-            width: 100%; padding: 14px; border: none; border-radius: 14px;
+            width: 100%; padding: 14px; border: none; border-radius: 16px;
             background: #1e293b; color: white; font-weight: 700;
-            font-size: 0.95rem; cursor: pointer; transition: transform 0.1s;
+            font-size: 0.95rem; cursor: pointer;
         }
-        .btn-reset:active { transform: scale(0.98); }
 
-        /* High Visibility Proxy */
         #drag-proxy {
             position: fixed; pointer-events: none; z-index: 100;
-            background: var(--primary); color: white;
-            padding: 14px 22px; border-radius: 16px;
+            color: white; padding: 14px 24px; border-radius: 18px;
             font-weight: 800; font-size: 1.6rem;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             display: none; transform: translate(-50%, -140%);
         }
     </style>
@@ -123,6 +127,12 @@
 
     <main class="chart-wrapper">
         <svg id="chart" viewBox="0 0 500 500">
+            <defs>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="1.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+            </defs>
             <g id="houses-group"></g>
             <g id="labels-group"></g>
             <g id="planets-group"></g>
@@ -149,10 +159,11 @@
 <script>
 const SIGN_NAMES = ["Ar", "Ta", "Ge", "Cn", "Le", "Vi", "Li", "Sc", "Sg", "Cp", "Aq", "Pi"];
 const PLANETS = [
-    {full:"Sun",short:"Su"}, {full:"Moon",short:"Mo"}, {full:"Mars",short:"Ma"},
-    {full:"Mercury",short:"Me"}, {full:"Jupiter",short:"Ju"}, {full:"Venus",short:"Ve"},
-    {full:"Saturn",short:"Sa"}, {full:"Rahu",short:"Ra"}, {full:"Ketu",short:"Ke"},
-    {full:"Lagna",short:"La"}
+    {full:"Sun", short:"Su", color:"var(--clr-sun)"}, {full:"Moon", short:"Mo", color:"var(--clr-moo)"}, 
+    {full:"Mars", short:"Ma", color:"var(--clr-mar)"}, {full:"Mercury", short:"Me", color:"var(--clr-mer)"}, 
+    {full:"Jupiter", short:"Ju", color:"var(--clr-jup)"}, {full:"Venus", short:"Ve", color:"var(--clr-ven)"},
+    {full:"Saturn", short:"Sa", color:"var(--clr-sat)"}, {full:"Rahu", short:"Ra", color:"var(--clr-nod)"}, 
+    {full:"Ketu", short:"Ke", color:"var(--clr-nod)"}, {full:"Lagna", short:"La", color:"var(--clr-lag)"}
 ];
 
 const HOUSE_PATHS = [
@@ -199,11 +210,12 @@ function renderPlanetBank() {
     PLANETS.forEach(p => {
         const inUse = state.placements[p.full] !== undefined;
         const div = document.createElement('div');
-        div.className = `planet-item ${inUse?'in-use':''} ${p.full==='Lagna'?'lagna-planet':''}`;
+        div.className = `planet-item ${inUse?'in-use':''}`;
+        div.style.color = p.color;
         div.textContent = p.short;
         if(!inUse) {
-            div.onmousedown = (e) => startDrag(e, p.full, p.short);
-            div.ontouchstart = (e) => startDrag(e, p.full, p.short);
+            div.onmousedown = (e) => startDrag(e, p.full, p.short, p.color);
+            div.ontouchstart = (e) => startDrag(e, p.full, p.short, p.color);
         }
         container.appendChild(div);
     });
@@ -229,34 +241,36 @@ function renderChart() {
         labelGroup.appendChild(createText(h.z[0], h.z[1], zodiacNum, 'zodiac-num'));
         labelGroup.appendChild(createText(h.c[0], h.c[1] - 45, signName, 'sign-label'));
 
-        const placedPlanets = Object.keys(state.placements).filter(p => state.placements[p] === h.id);
-        const spacing = 18;
-        const totalHeight = (placedPlanets.length - 1) * spacing;
+        const placedNames = Object.keys(state.placements).filter(p => state.placements[p] === h.id);
+        const spacing = 19;
+        const totalHeight = (placedNames.length - 1) * spacing;
         const startY = h.c[1] - (totalHeight / 2) + 5;
 
-        placedPlanets.forEach((p, i) => {
-            const short = PLANETS.find(x => x.full === p)?.short || p;
-            const node = createText(h.c[0], startY + (i * spacing), short, 'planet-tag');
-            node.onmousedown = (e) => startDrag(e, p, short);
-            node.ontouchstart = (e) => startDrag(e, p, short);
-            node.onclick = (e) => { e.stopPropagation(); removePlanet(p); };
+        placedNames.forEach((name, i) => {
+            const pData = PLANETS.find(x => x.full === name);
+            const node = createText(h.c[0], startY + (i * spacing), pData.short, 'planet-tag');
+            node.setAttribute('fill', pData.color);
+            node.setAttribute('filter', 'url(#glow)'); // Apply glow filter
+            node.onmousedown = (e) => startDrag(e, name, pData.short, pData.color);
+            node.ontouchstart = (e) => startDrag(e, name, pData.short, pData.color);
+            node.onclick = (e) => { e.stopPropagation(); removePlanet(name); };
             planetGroup.appendChild(node);
         });
     });
 }
 
-function startDrag(e, planetFull, planetShort) {
+function startDrag(e, planetFull, planetShort, planetColor) {
     if(e.cancelable) e.preventDefault();
     draggedPlanet = planetFull;
     const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
     const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
     
     proxy.textContent = planetShort;
+    proxy.style.backgroundColor = planetColor;
     proxy.style.display = 'block';
     updateProxyPos(clientX, clientY);
 
     const onMove = (me) => {
-        if(me.cancelable) me.preventDefault();
         const x = me.type.includes('touch') ? me.touches[0].clientX : me.clientX;
         const y = me.type.includes('touch') ? me.touches[0].clientY : me.clientY;
         updateProxyPos(x, y);
@@ -272,9 +286,7 @@ function startDrag(e, planetFull, planetShort) {
         const y = ee.type.includes('touch') ? ee.changedTouches[0].clientY : ee.clientY;
         
         const target = document.elementFromPoint(x, y);
-        if (target && target.dataset.house) {
-            state.placements[draggedPlanet] = parseInt(target.dataset.house);
-        }
+        if (target && target.dataset.house) state.placements[draggedPlanet] = parseInt(target.dataset.house);
         
         document.querySelectorAll('.house').forEach(h => h.classList.remove('drag-over'));
         window.removeEventListener('mousemove', onMove);
